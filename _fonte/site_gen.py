@@ -16,7 +16,7 @@ ICON={
 }
 NICHO={
  'mecanica':dict(nome='Mecânica',titulo='Explica Aí · Mecânica',cor='#FF5A3C',tinta='#fff',frase='Tudo que tem motor, explicado do jeito simples.',
-   produtos=[dict(t='Calibrador digital de pneu',s='Do vídeo do ABS · palavra PNEU',href=None,ico='cart')]),
+   produtos=[dict(t='Mini compressor de pneu',s='Do vídeo do ABS · palavra PNEU',href='https://meli.la/1pUrf72',ico='cart')]),
  'casa':dict(nome='Casa',titulo='Explica Aí · Casa e Obra',cor='#FFC928',tinta='#0F1A66',frase='Obra, elétrica e encanamento sem mistério.',
    produtos=[]),
  'grana':dict(nome='Grana',titulo='Explica Aí · Dinheiro',cor='#22C55E',tinta='#0F1A66',frase='O dinheiro do dia a dia, explicado sem enrolação.',
