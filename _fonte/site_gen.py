@@ -5,6 +5,15 @@ ID='/mnt/project-files/identidade/'
 for n in ['mecanica','casa','grana']:
     Image.open(ID+f'perfil-{n}-1080.png').convert('RGB').resize((320,320),Image.LANCZOS).save(f'{OUT}/img/{n}.jpg',quality=88)
 shutil.copy('/mnt/project-files/grana-002/planilha_dividas_explicaai.xlsx', OUT+'/planilha_dividas_explicaai.xlsx')
+# fotos dos produtos (quadradas, fundo branco); fonte em _fonte/produtos/
+FONTE=os.path.dirname(os.path.abspath(__file__))+'/produtos/'
+def foto(src,box,dst):
+    im=Image.open(FONTE+src).convert('RGB')
+    if box: im=im.crop(box)
+    w,h=im.size; s=max(w,h); bg=Image.new('RGB',(s,s),'white'); bg.paste(im,((s-w)//2,(s-h)//2))
+    bg.resize((240,240),Image.LANCZOS).save(f'{OUT}/img/{dst}',quality=88)
+foto('multimetro.png',None,'p-multimetro.jpg')
+foto('compressor.png',(60,140,460,1110),'p-compressor.jpg')
 
 ICON={
  'ig':'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>',
@@ -16,9 +25,9 @@ ICON={
 }
 NICHO={
  'mecanica':dict(nome='Mecânica',titulo='Explica Aí · Mecânica',cor='#FF5A3C',tinta='#fff',frase='Tudo que tem motor, explicado do jeito simples.',
-   produtos=[dict(t='Mini compressor de pneu',s='Do vídeo do ABS · palavra PNEU',href='https://meli.la/1pUrf72',ico='cart')]),
+   produtos=[dict(t='Mini compressor de pneu',s='Do vídeo do ABS · palavra PNEU',href='https://meli.la/1pUrf72',ico='cart',img='p-compressor.jpg')]),
  'casa':dict(nome='Casa',titulo='Explica Aí · Casa e Obra',cor='#FFC928',tinta='#0F1A66',frase='Obra, elétrica e encanamento sem mistério.',
-   produtos=[dict(t='Multímetro digital',s='Do vídeo do disjuntor · palavra MULTÍMETRO',href='https://meli.la/2dDvaiA',ico='cart')]),
+   produtos=[dict(t='Multímetro digital',s='Do vídeo do disjuntor · palavra MULTÍMETRO',href='https://meli.la/2dDvaiA',ico='cart',img='p-multimetro.jpg')]),
  'grana':dict(nome='Grana',titulo='Explica Aí · Dinheiro',cor='#22C55E',tinta='#0F1A66',frase='O dinheiro do dia a dia, explicado sem enrolação.',
    produtos=[dict(t='Planilha grátis: todas as dívidas num lugar só',s='Do vídeo do rotativo · palavra JUROS',href='../planilha_dividas_explicaai.xlsx',ico='gift',dl=True)]),
 }
@@ -40,6 +49,7 @@ a.bt,.bt{width:100%;display:flex;align-items:center;gap:14px;text-decoration:non
  box-shadow:5px 5px 0 var(--tinta);transition:transform .08s,box-shadow .08s}
 a.bt:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--tinta)}
 .bt .ic{flex:none;width:46px;height:46px;border-radius:14px;background:var(--c);color:var(--ct);display:grid;place-items:center;border:3px solid var(--tinta)}
+.bt .ph{flex:none;width:72px;height:72px;border-radius:16px;object-fit:contain;background:#fff;border:3px solid var(--tinta)}
 .bt .ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .bt b{display:block;font-weight:700;font-size:17px;line-height:1.15}
 .bt small{display:block;font-size:13.5px;opacity:.7;margin-top:2px}
@@ -58,8 +68,9 @@ HEAD='''<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name
 <link rel="icon" href="{img}"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet"><style>{css}</style></head><body><main style="{vars}">'''
 FOOT='<div class="carimbo">Tá explicado ✓</div></main></body></html>'
-def bt(t,s,href,ico,cls='',tag='',dl=False):
-    inner=f'<span class="ic">{ICON[ico]}</span><span><b>{t}</b><small>{s}</small></span>'+(f'<span class="tag">{tag}</span>' if tag else '')
+def bt(t,s,href,ico,cls='',tag='',dl=False,img=None):
+    ic=f'<img class="ph" src="../img/{img}" alt="{t}">' if img else f'<span class="ic">{ICON[ico]}</span>'
+    inner=ic+f'<span><b>{t}</b><small>{s}</small></span>'+(f'<span class="tag">{tag}</span>' if tag else '')
     if not href: return f'<div class="bt off {cls}">{inner}</div>'
     ext='' if href.startswith('.') else ' target="_blank" rel="noopener"'
     return f'<a class="bt {cls}" href="{href}"{ext}{" download" if dl else ""}>{inner}</a>'
@@ -75,7 +86,7 @@ for k,v in NICHO.items():
     h+='<h2>Comentou, ganhou</h2>'
     if v['produtos']:
         for p in v['produtos']:
-            h+=bt(p['t'],p['s'],p['href'],p['ico'],'destaque',tag='' if p['href'] else 'em breve',dl=p.get('dl',False))
+            h+=bt(p['t'],p['s'],p['href'],p['ico'],'destaque',tag='' if p['href'] else 'em breve',dl=p.get('dl',False),img=p.get('img'))
     else:
         h+=bt('Achados da obra','As ferramentas dos vídeos aparecem aqui',None,'star','destaque',tag='em breve')
     h+='<h2>Siga o Explica Aí</h2>'
