@@ -5,6 +5,7 @@ ID='/mnt/project-files/identidade/'
 for n in ['mecanica','casa','grana']:
     Image.open(ID+f'perfil-{n}-1080.png').convert('RGB').resize((320,320),Image.LANCZOS).save(f'{OUT}/img/{n}.jpg',quality=88)
 shutil.copy('/mnt/project-files/grana-002/planilha_dividas_explicaai.xlsx', OUT+'/planilha_dividas_explicaai.xlsx')
+shutil.copy('/mnt/project-files/grana-003/calculadora_parcelar_explicaai.xlsx', OUT+'/calculadora_parcelar_explicaai.xlsx')
 # fotos dos produtos (quadradas, fundo branco); fonte em _fonte/produtos/
 FONTE=os.path.dirname(os.path.abspath(__file__))+'/produtos/'
 def foto(src,box,dst):
@@ -29,7 +30,8 @@ NICHO={
  'casa':dict(nome='Casa',titulo='Explica Aí · Casa e Obra',cor='#FFC928',tinta='#0F1A66',frase='Obra, elétrica e encanamento sem mistério.',
    produtos=[dict(t='Multímetro digital',s='Do vídeo do disjuntor · palavra MULTÍMETRO',href='https://meli.la/2dDvaiA',ico='cart',img='p-multimetro.jpg')]),
  'grana':dict(nome='Grana',titulo='Explica Aí · Dinheiro',cor='#22C55E',tinta='#0F1A66',frase='O dinheiro do dia a dia, explicado sem enrolação.',
-   produtos=[dict(t='Planilha grátis: todas as dívidas num lugar só',s='Do vídeo do rotativo · palavra JUROS',href='../planilha_dividas_explicaai.xlsx',ico='gift',dl=True)]),
+   produtos=[dict(t='Calculadora grátis: parcelar ou pagar à vista?',s='Do vídeo do sem juros · palavra PARCELA',href='../calculadora_parcelar_explicaai.xlsx',ico='gift',dl=True),
+            dict(t='Planilha grátis: todas as dívidas num lugar só',s='Do vídeo do rotativo · palavra JUROS',href='../planilha_dividas_explicaai.xlsx',ico='gift',dl=True)]),
 }
 CSS='''
 :root{--azul:#1D33C9;--amarelo:#FFC928;--coral:#FF5A3C;--tinta:#0F1A66;--branco:#fff}
